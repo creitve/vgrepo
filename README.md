@@ -53,4 +53,4 @@ See vgrepo help <command> for information on a specific command.
 
 ## License
 
-[MIT](LICENSE).
+[MIT](LICENSE)
