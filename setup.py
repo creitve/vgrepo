@@ -15,7 +15,7 @@ setup(
     """,
     author='Gleb Goncharov',
     author_email='gongled@gongled.ru',
-    install_requires=['clint>=0.5.0', 'packages'],
+    install_requires=['clint>=0.5.0'],
     url='https://github.com/gongled/vgrepo',
     package_dir={'': 'lib'},
     packages=find_packages('lib'),
