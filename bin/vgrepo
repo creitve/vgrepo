@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+# coding: utf8
+
+from vgrepo.vgrepo import VCLIApp
+
+APP_NAME = "vgrepo"
+CONF_FILE = "/etc/{app}.conf".format(app=APP_NAME)
+
+
+def main():
+    VCLIApp(APP_NAME, CONF_FILE)
+
+
+if __name__ == "__main__":
+    main()

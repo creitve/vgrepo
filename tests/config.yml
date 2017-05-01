@@ -1,0 +1,9 @@
+---
+
+vms:
+  vm-test:
+    box: centos6-x64 
+    box_url: "https://vagrant.gongled.me/centos6-x64"
+    ip: 10.0.8.10
+    cpus: 2
+    memory: 1024
