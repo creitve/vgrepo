@@ -1,6 +1,7 @@
 # About
 
 [![Build Status](https://travis-ci.org/gongled/vgrepo.svg?branch=master)](https://travis-ci.org/gongled/vgrepo)
+[![codebeat badge](https://codebeat.co/badges/016cae98-9953-4f0e-9495-d9a91969b6ef)](https://codebeat.co/projects/github-com-gongled-vgrepo-master)
 [![PyPI](https://img.shields.io/pypi/v/vgrepo.svg)]()
 
 `vgrepo` is a tool for managing Vagrant repositories written in Python.
