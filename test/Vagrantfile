@@ -10,7 +10,7 @@ CURRENT_DIR="#{File.dirname(__FILE__)}"
 
 ################################################################################
 
-yaml_config = YAML.load_file('config.yml')
+yaml_config = YAML.load_file('vagrant.yml')
 vms         = yaml_config["vms"]
 
 ################################################################################
