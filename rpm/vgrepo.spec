@@ -2,7 +2,7 @@
 
 Summary:        Utility for managing Vagrant repositories
 Name:           vgrepo
-Version:        1.0.0
+Version:        1.0.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries
@@ -13,7 +13,7 @@ Source1:        %{name}.conf
 
 BuildRequires:  python-clint python-devel python-setuptools
 
-Requires:       python-clint python-setuptools
+Requires:       python-clint python-setuptools PyYAML
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -56,6 +56,9 @@ install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/%{name}.conf
 ########################################################################################
 
 %changelog
-* Mon May 1 2017 Gleb Goncharov <gongled@gongled.ru> - 1.0.0-0
+* Tue May 2 2017 Gleb Goncharov <gongled@gongled.ru> - 1.0.1-0
+- Added PyYAML in a dependency list
+
+* Mon May 1 2017 Gleb Goncharov <gongled@gongled.ru> - 1.0.1-0
 - Initial build
 
