@@ -16,3 +16,4 @@ pip-log.txt
 tests/vgrepo.conf
 *.rpm
 lib/main.py
+/test/develop
