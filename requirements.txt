@@ -1,2 +1,2 @@
-clint==0.5.1
+clint>=0.5.0
 packaging

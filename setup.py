@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-from setuptools import setup
+from setuptools import setup, find_packages
 
 extra = {}
 if sys.version_info >= (3,):
@@ -15,9 +15,10 @@ setup(
     """,
     author='Gleb Goncharov',
     author_email='gongled@gongled.ru',
-    install_requires=['clint>=0.5.0', 'packaging'],
+    install_requires=['clint>=0.5.0', 'packages'],
     url='https://github.com/gongled/vgrepo',
-    packages=['vgrepo'],
+    package_dir={'': 'lib'},
+    packages=find_packages('lib'),
     license='MIT',
     platforms='Posix; MacOS X; Windows',
     classifiers=[

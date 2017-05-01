@@ -15,3 +15,4 @@ pip-log.txt
 .vagrant
 tests/vgrepo.conf
 *.rpm
+lib/main.py
