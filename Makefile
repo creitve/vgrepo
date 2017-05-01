@@ -10,6 +10,6 @@ publish: build
 		twine upload dist/*
 
 clean:
-		rm -rf dist/ build/
+		rm -rf dist/ build/ *egg-info
 
 .PHONY: check clean package publish

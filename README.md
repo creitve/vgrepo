@@ -17,7 +17,7 @@ pip install vgrepo
 
 ```bash
 git clone git@github.com:gongled/vgrepo
-python pycscart/setup.py install
+python vgrepo/setup.py install
 ```
 
 ## Usage

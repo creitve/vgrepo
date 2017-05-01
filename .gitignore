@@ -13,3 +13,5 @@ pip-log.txt
 *.box
 *.json
 .vagrant
+tests/vgrepo.conf
+*.rpm
