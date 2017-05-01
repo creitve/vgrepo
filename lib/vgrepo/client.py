@@ -53,7 +53,7 @@ class VCLIApp:
                 app=self.app
             ))
 
-        puts("\nSee {app} help <command> for information on a specific command.".format(
+        puts("\nSee {app} help <command> for information on a specific command.\n".format(
             app=colored.yellow(self.app)
         ))
 
