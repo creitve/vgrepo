@@ -1,0 +1,10 @@
+version: "3"
+services:
+  vgrepo-server:
+    build:
+      context: .
+      dockerfile: vgrepo-server.docker
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./repo:/app

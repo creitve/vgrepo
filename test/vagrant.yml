@@ -1,9 +1,7 @@
 ---
 
 vms:
-  vm-test:
-    box: centos6-x64 
-    box_url: "https://vagrant.gongled.me/centos6-x64"
+  vm-default:
+    box: default
+    box_url: "http://localhost:8080/default"
     ip: 10.0.8.10
-    cpus: 2
-    memory: 1024

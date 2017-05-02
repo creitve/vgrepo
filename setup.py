@@ -8,7 +8,7 @@ if sys.version_info >= (3,):
 
 setup(
     name='vgrepo',
-    version='1.0.0',
+    version='1.0.1',
     description='Utility for managing Vagrant repositories',
     long_description="""
         Pythonic tool for adding, listing and removing Vagrant images from repositories.

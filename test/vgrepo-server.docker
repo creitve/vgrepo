@@ -1,6 +1,6 @@
 FROM nginx:mainline
 
-COPY nginx.conf /etc/nginx/conf.d/app.conf
+COPY "nginx.conf" "/etc/nginx/conf.d/vgrepo.conf"
 
 EXPOSE 8080
 

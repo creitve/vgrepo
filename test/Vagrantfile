@@ -6,35 +6,12 @@ require 'yaml'
 ################################################################################
 
 API_VERSION=2
-CURRENT_DIR="#{File.dirname(__FILE__)}"
+NODES = YAML.load_file('vagrant.yml')["vms"]
 
 ################################################################################
-
-yaml_config = YAML.load_file('vagrant.yml')
-vms         = yaml_config["vms"]
-
-################################################################################
-
-module OS
-    def OS.windows?
-        (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
-    end
-
-    def OS.mac?
-        (/darwin/ =~ RUBY_PLATFORM) != nil
-    end
-
-    def OS.unix?
-        !OS.windows?
-    end
-
-    def OS.linux?
-        OS.unix? and not OS.mac?
-    end
-end
 
 Vagrant.configure(API_VERSION) do |config|
-  vms.each do |vm_host, vm_conf|
+  NODES.each do |vm_host, vm_conf|
 
     config.vm.define vm_host, autostart: true do |conf|
       conf.ssh.forward_agent = true
@@ -43,12 +20,6 @@ Vagrant.configure(API_VERSION) do |config|
       conf.vm.box = vm_conf["box"]
       if !(vm_conf["box_url"].nil?)
         conf.vm.box_url = vm_conf["box_url"]
-      end
-
-      if !(vm_conf["box_download_checksum"].nil?)
-        conf.vm.box_download_checksum = vm_conf["box_download_checksum"]
-        conf.vm.box_download_checksum_type = "sha1"
-        conf.vm.box_check_update = false
       end
 
       conf.vm.hostname = "#{vm_host}"

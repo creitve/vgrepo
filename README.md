@@ -6,6 +6,12 @@
 
 `vgrepo` is a tool for managing Vagrant repositories written in Python.
 
+## Requirements
+
+- Python 2.6 or higher
+- [clint](https://github.com/kennethreitz/clint) 0.5.0 or higher
+- [PyYAML](https://github.com/yaml/pyyaml) 3.10 or higher
+
 ## Installation
 
 #### From PyPI
@@ -24,23 +30,23 @@ python vgrepo/setup.py install
 ## Usage
 
 ```
-Usage: vgrepo command options
+Usage: vgrepo [command] [options]
 
-Utility for managing Vagrant's repository.
+Utility for operating Vagrant images.
 
 Commands:
 
-  a or add                        Add box into the Vagrant's repository
-  l or list                       Show list of available boxes
-  d or delete                     Delete box from the repository
-  k or kill                       Destroy all boxes with metadata from the repository
+  a or add                        Add image into the Vagrant's repository
+  l or list                       Show list of available images
+  d or delete                     Delete image from the repository
+  k or kill                       Destroy all images with metadata from the repository
   h or help                       Show detailed information about command
 
 Options:
 
-  -v or --version [ver]           Value of version of the box
-  -n or --name [box]              Name of box in the repository
-  -d or --description [descr]     Description of the box in the repository
+  -v or --version [ver]           Value of version of the image
+  -n or --name [box]              Name of image in the repository
+  -d or --description [descr]     Description of the image in the repository
 
 Examples:
 
