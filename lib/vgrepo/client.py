@@ -1,165 +1,185 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from .repository import VRepository
+from .repository import VRepositoryManager, VRepository
 
 from clint.arguments import Args
 
 from clint.textui import colored, puts, indent, min_width, max_width
 
 
-class VCLIApp:
+APP = "vgrepo"
+VER = "1.0.1"
+DESC = "Utility for operating Vagrant images"
+
+
+class VCLIUsage:
+
+    _INDENT_SIZE = 4
+    _MIN_COLUMN_WIDTH = 25
+    _MAX_COLUMN_WIDTH = 80
 
     @staticmethod
-    def add_usage_command(cmd, short_cmd, descr):
-        puts(min_width("{short_cmd} or {cmd}".format(
-            short_cmd=colored.yellow(short_cmd),
-            cmd=colored.yellow(cmd)
-        ), 30), newline=False)
-        puts(max_width(min_width("{descr}".format(descr=descr), 60), 90))
+    def parse_command(cmd):
+        if cmd.find(':') != -1:
+            cmd_slice = cmd.split(':')
+            return "{long} or {short}".format(long=cmd_slice[1], short=cmd_slice[0])
 
-    def show_usage_header(self):
-        puts("\n{usage}: {app} {commands} {options}\n\n{descr}\n".format(
+        return "{long}".format(long=cmd)
+
+    @staticmethod
+    def parse_option(option):
+        if option.startswith('-'):
+            return option
+
+        if option.find(":") != -1:
+            option_slice = option.split(':')
+            return "-{short}, --{long}".format(long=option_slice[1], short=option_slice[0])
+
+        return "--{long}".format(long=option)
+
+    def __init__(self, app, version, desc):
+        self.app = app
+        self.version = version
+        self.desc = desc
+        self.commands = []
+        self.options = []
+        self.examples = []
+
+    def add_command(self, cmd, desc):
+        self.commands.append({
+            'cmd': self.parse_command(cmd),
+            'desc': desc
+        })
+
+    def add_option(self, option, desc):
+        self.options.append({
+            'option': self.parse_option(option),
+            'desc': desc
+        })
+
+    def add_example(self, example):
+        self.examples.append({
+            'example': example
+        })
+
+    def render(self):
+        self.render_header()
+        self.render_commands()
+        self.render_options()
+        self.render_examples()
+
+    def render_header(self):
+        header_template = "\n{usage}: {app} {commands} {options}\n\n{desc}\n"
+
+        puts(header_template.format(
             usage=colored.white("Usage", bold=True),
             app=self.app,
-            descr="Utility for managing Vagrant's repository.",
+            desc=self.desc,
             commands=colored.yellow("command"),
             options=colored.green("options")),
         )
 
-    def show_usage_common(self, cmd=None):
-        self.show_usage_header()
+    def render_commands(self):
+        if self.commands:
+            puts(colored.yellow("Commands:\n"))
 
-        puts(colored.yellow("Commands:\n"))
-        with indent(2):
-            self.show_usage_commands(cmd)
+            with indent(self._INDENT_SIZE):
+                for c in self.commands:
+                    puts(min_width(c['cmd'], self._MIN_COLUMN_WIDTH), newline=False)
+                    puts(max_width(min_width(
+                        c['desc'],
+                        self._MAX_COLUMN_WIDTH - self._MIN_COLUMN_WIDTH),
+                        self._MAX_COLUMN_WIDTH),
+                        newline=True
+                    )
+            puts("")
 
-        puts(colored.yellow("\nOptions:\n"))
-        with indent(2):
-            self.show_usage_options(cmd)
+    def render_options(self):
+        if self.options:
+            puts(colored.yellow("Options:\n"))
 
-        puts(colored.yellow("\nExamples:\n"))
-        with indent(2):
-            puts("{app} add $HOME/vagrant/centos7-x86_64.box --name powerbox --version 1.0.1".format(
-                app=self.app
-            ))
-            puts("{app} delete powerbox --version 1.1.0".format(
-                app=self.app
-            ))
-            puts("{app} list".format(
-                app=self.app
-            ))
-            puts("{app} kill powerbox".format(
-                app=self.app
-            ))
+            with indent(self._INDENT_SIZE):
+                for o in self.options:
+                    puts(min_width(o['option'], self._MIN_COLUMN_WIDTH), newline=False)
+                    puts(max_width(min_width(
+                        o['desc'],
+                        self._MAX_COLUMN_WIDTH - self._MIN_COLUMN_WIDTH),
+                        self._MAX_COLUMN_WIDTH),
+                        newline=True
+                    )
+            puts("")
 
-        puts("\nSee {app} help <command> for information on a specific command.\n".format(
-            app=colored.yellow(self.app)
-        ))
+    def render_examples(self):
+        if self.examples:
+            puts(colored.yellow("Examples:\n"))
 
-    def show_usage_commands(self, cmd=None):
-        if not cmd or cmd == "add":
-            self.add_usage_command(
-                short_cmd="a",
-                cmd="add",
-                descr="Add box into the Vagrant's repository"
-            )
+            with indent(self._INDENT_SIZE):
+                for e in self.examples:
+                    puts(min_width(e['example'], self._MAX_COLUMN_WIDTH))
 
-        if not cmd or cmd == "list":
-            self.add_usage_command(
-                short_cmd="l",
-                cmd="list",
-                descr="Show list of available boxes"
-            )
+            puts("")
 
-        if not cmd or cmd == "delete":
-            self.add_usage_command(
-                short_cmd="d",
-                cmd="delete",
-                descr="Delete box from the repository"
-            )
 
-        if not cmd or cmd == "kill":
-            self.add_usage_command(
-                short_cmd="k",
-                cmd="kill",
-                descr="Destroy all boxes with metadata from the repository"
-            )
+class VCLIApp:
 
-        if not cmd or cmd == "help":
-            self.add_usage_command(
-                short_cmd="h",
-                cmd="help",
-                descr="Show detailed information about command"
-            )
+    def process(self):
+        if self.cli.contains(['h', 'help']):
+            self.show_usage()
 
-    def show_usage_options(self, cmd):
+        elif self.cli.contains(['a', 'add']):
+            self.add_image()
 
-        if not cmd or cmd == "add" or cmd == "delete":
-            self.add_usage_command(
-                short_cmd="-v",
-                cmd="--version [ver]",
-                descr="Value of version of the box"
-            )
-        if not cmd or cmd == "add":
-            self.add_usage_command(
-                short_cmd="-n",
-                cmd="--name [box]",
-                descr="Name of box in the repository"
-            )
-            self.add_usage_command(
-                short_cmd="-d",
-                cmd="--description [descr]",
-                descr="Description of the box in the repository"
-            )
-        if cmd == "list":
-            puts("There is no extra options")
+        elif self.cli.contains(['l', 'list']):
+            self.list_images()
 
-    def __init__(self, app, cnf):
+        elif self.cli.contains(['r', 'remove']):
+            self.delete_image()
 
-        self.app = app
-        self.repo = VRepository(cnf)
-        self.cli = Args()
+        elif self.cli.contains(['d', 'destroy']):
+            self.destroy_image()
 
-        if self.cli.contains('help') or self.cli.contains('h'):
-            self.usage()
-        elif self.cli.contains('add') or self.cli.contains('a'):
-            self.add_command()
-        elif self.cli.contains('list') or self.cli.contains('l'):
-            self.list_command()
-        elif self.cli.contains('delete') or self.cli.contains('d'):
-            self.delete_command()
-        elif self.cli.contains('kill') or self.cli.contains('k'):
-            self.kill_command()
         else:
-            self.usage()
+            self.show_usage()
 
-    def add_command(self):
+    def __init__(self, cnf):
+        self.app = APP
+        self.repo = VRepositoryManager(cnf)
+        # self.usage = VCLIUsage(APP, VER, DESC)
+        # self.cli = Args()
+        #
+        # self.process()
 
-        box_path = self.cli.files[0] if self.cli.files and len(self.cli.files) > 0 else None
+    def add_image(self):
+        box = {
+            'path': self.cli.files[0] if self.cli.files and len(self.cli.files) > 0 else None,
+            'name': self.cli.value_after('-n') or self.cli.value_after('--name'),
+            'version': self.cli.value_after('-v') or self.cli.value_after('--version'),
+            'desc': self.cli.value_after('-d') or self.cli.value_after('--desc'),
+        }
 
-        box_name = self.cli.value_after('--name') or self.cli.value_after('-n') or None
+        if box['path'] and box['version']:
+            puts("Adding image to the repository... ")
 
-        box_version = self.cli.value_after('--version') or self.cli.value_after('-v') or None
+            is_added = self.repo.add(
+                src=box['path'],
+                name=box['name'],
+                version=box['version'],
+                desc=box['desc']
+            )
 
-        box_description = self.cli.value_after('--description') or self.cli.value_after('-d') or None
-
-        if box_path and box_version:
-            if self.repo.add(
-                src_path=box_path,
-                name=box_name,
-                version=box_version,
-                description=box_description
-            ):
-                puts(colored.green("\nCompleted"))
+            if is_added:
+                msg_status = colored.green("OK")
             else:
-                puts(colored.red("\nFailed"))
+                msg_status = colored.red("Error")
+
+            puts(msg_status)
         else:
-            self.show_usage_common()
+            self.show_usage()
 
         return True
 
-    def list_command(self):
+    def list_images(self):
         boxes = self.repo.list()
 
         if boxes:
@@ -175,29 +195,54 @@ class VCLIApp:
         else:
             puts("There is no boxes yet.")
 
-    def delete_command(self):
-        box_name = self.cli.value_after('delete') or self.cli.value_after('d') or None
-        box_version = self.cli.value_after('--version') or self.cli.value_after('-v') or None
+    def delete_image(self):
+        box = {
+            'name': self.cli.value_after('r') or self.cli.value_after('remove'),
+            'version': self.cli.value_after('-v') or self.cli.value_after('--version'),
+        }
 
-        if box_name and box_version:
-            self.repo.delete(box_name, box_version)
+        if box['name'] and box['version']:
+
+            puts("Deleting image from the repository... ", newline=False)
+            is_deleted = self.repo.remove(
+                img=box['name'],
+                version=box['version']
+            )
+
+            if is_deleted:
+                msg_status = colored.green("OK")
+            else:
+                msg_status = colored.red("FAIL")
+
+            puts(msg_status)
         else:
-            self.show_usage_common()
+            self.show_usage()
 
-    def kill_command(self):
+    def destroy_image(self):
         box_name = self.cli.value_after('kill') or \
-                   self.cli.value_after('k') or \
-                   None
+                   self.cli.value_after('k')
 
         if box_name:
-            self.repo.kill(box_name)
+            self.repo.destroy(box_name)
         else:
-            self.show_usage_common()
+            self.show_usage()
 
-    def usage(self):
-        cmd = self.cli.value_after("help") or None
+    def show_usage(self):
+        self.usage.add_command(cmd="a:add", desc="Add image into the Vagrant's repository")
+        self.usage.add_command(cmd="l:list", desc="Show list of available images")
+        self.usage.add_command(cmd="r:remove", desc="Remove image from the repository")
+        self.usage.add_command(cmd="d:destroy", desc="Destroy all images with metadata from the repository")
+        self.usage.add_command(cmd="h:help", desc="Show detailed information about command")
 
-        self.show_usage_common(cmd)
+        self.usage.add_option(option="v:version", desc="Value of version of the box")
+        self.usage.add_option(option="n:name", desc="Name of box in the repository")
+        self.usage.add_option(option="d:desc", desc="Description of the box in the repository")
+
+        self.usage.add_example("{app} add $HOME/centos7-x86_64.box --name powerbox --version 1.0.1".format(app=APP))
+        self.usage.add_example("{app} delete powerbox --version 1.1.0".format(app=APP))
+        self.usage.add_example("{app} list".format(app=APP))
+
+        self.usage.render()
 
 
 def pretty_print(name, version, checksum):

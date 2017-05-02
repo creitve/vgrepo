@@ -1,26 +1,26 @@
 from .base import VMetadataObject
 
 
-class VMetadataBox(VMetadataObject):
+class VMetadataImage(VMetadataObject):
 
     def __init__(self, name=None, versions=None, description=None):
         """
-        :param name: name of Vagrant's box
+        :param name: name of the image
         :type name: str
         :param versions: list of VMetadataVersion objects
         :type versions: collections.Iterable
-        :param description: short description of the box
+        :param description: short description of the image
         :type description: str
         """
 
         self.name = name
+        self.description = description
         if versions:
             self.versions = [v if isinstance(v, VMetadataVersion)
                              else VMetadataVersion().from_json(v)
                              for v in versions]
         else:
             self.versions = []
-        self.description = description
 
 
 class VMetadataVersion(VMetadataObject):
@@ -46,9 +46,9 @@ class VMetadataProvider(VMetadataObject):
 
     def __init__(self, url=None, name=None, checksum_type=None, checksum=None):
         """
-        :param url: URL to accessible box
+        :param url: Public accessible URL of the image
         :type url: str
-        :param name: short name of the box
+        :param name: short name of the image
         :type name: str
         :param checksum_type: type of checksum type
         :type checksum_type: str
