@@ -174,15 +174,16 @@ class VCLIApplication:
         return True
 
     def list_command(self):
-        boxes = self.repo.list()
+        name = self.cli.value_after('-n') or self.cli.value_after('--name')
+        repos = self.repo.list(name)
 
-        if boxes:
+        if repos:
             pretty_print("NAME", "VERSION", "CHECKSUM")
-            for box in boxes:
-                for ver in box.versions:
+            for r in repos:
+                for ver in r.versions:
                     checksum = ver.providers[0].checksum if ver.providers else None
                     pretty_print(
-                        name=box.name,
+                        name=r.name,
                         version=ver.version,
                         checksum=checksum
                     )
