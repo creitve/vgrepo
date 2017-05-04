@@ -122,7 +122,8 @@ class VCLIUsage:
         """
         puts(min_width(body, self.TOTAL_WIDTH))
 
-    def render_line2(self, left, right):
+    @staticmethod
+    def render_line2(left, right):
         """
         Displays line in two columns
 
@@ -133,7 +134,7 @@ class VCLIUsage:
         :return: 
         """
 
-        def render_left_column(self, text):
+        def render_left_column(text):
             """
             Displays left column
 
@@ -142,18 +143,18 @@ class VCLIUsage:
             :return: 
             """
 
-            puts(min_width(text, self.LEFT_COLUMN_WIDTH), newline=False)
+            puts(min_width(text, VCLIUsage.LEFT_COLUMN_WIDTH), newline=False)
 
-        def render_right_column(self, body):
+        def render_right_column(text):
             """
             Displays right column
 
-            :param body: text which should be displayed on the right side
-            :type body: str
+            :param text: text which should be displayed on the right side
+            :type text: str
             :return: 
             """
 
-            puts(max_width(min_width(body, self.RIGHT_COLUMN_WIDTH), self.TOTAL_WIDTH))
+            puts(max_width(min_width(text, VCLIUsage.RIGHT_COLUMN_WIDTH), VCLIUsage.TOTAL_WIDTH))
 
         render_left_column(left)
         render_right_column(right)

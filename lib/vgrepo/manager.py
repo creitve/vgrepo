@@ -44,12 +44,14 @@ class VRepositoryManager:
 
         r.add(src, img)
 
+        return True
+
     def list(self, name=None):
         if name:
-            repos = [VRepository(name, self.settings).meta]
+            repos = [VRepository(name, self.settings)]
         else:
-            repos = [VRepository(d, self.settings).meta
-                     for d in VRepositoryManager.list_dirs(self.settings.repo_path)
+            repos = [VRepository(d, self.settings)
+                     for d in VRepositoryManager.list_dirs(self.settings.storage_path)
                      ]
 
         return repos
@@ -58,3 +60,5 @@ class VRepositoryManager:
         r = VRepository(name, self.settings)
 
         r.remove(version)
+
+        return True

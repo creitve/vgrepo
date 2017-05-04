@@ -20,9 +20,9 @@ class VSettings:
         self.settings = VSettings.read(cnf)
 
     @property
-    def repo_url(self):
+    def storage_url(self):
         return self.settings.get('storage').get('url').strip('/')
 
     @property
-    def repo_path(self):
+    def storage_path(self):
         return self.settings.get('storage').get('path')

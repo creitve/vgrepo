@@ -1,14 +1,22 @@
 #!/usr/bin/env python
 # encoding: utf8
 
+import hashlib
+import json
 import os
 import shutil
-import json
-import hashlib
-
 from copy import deepcopy
+
 from packaging.version import Version
+
 from .meta.images import VMetadataImage
+
+
+class VImageVersionFoundError(Exception):
+
+    def __init__(self, name, version):
+        self.name = name
+        self.version = version
 
 
 class VRepository:
@@ -52,7 +60,13 @@ class VRepository:
 
     @property
     def image_dir(self):
-        return os.path.join(self.settings.repo_path, self.meta.name)
+        return os.path.join(self.settings.storage_path, self.meta.name)
+
+    @property
+    def repo_url(self):
+        url_format = "{url}/{name}"
+
+        return url_format.format(url=self.settings.storage_url, name=self.meta.name)
 
     def get_image_path(self, version):
         path_format = "{name}-{version}.box"
@@ -60,9 +74,9 @@ class VRepository:
         return os.path.join(self.image_dir, path_format.format(name=self.meta.name, version=version))
 
     def get_image_url(self, version):
-        url_format = "{url}/{name}/{name}-{version}.box"
+        url_format = "{url}/{name}-{version}.box"
 
-        return url_format.format(url=self.settings.repo_url, name=self.meta.name, version=version)
+        return url_format.format(url=self.repo_url, name=self.meta.name, version=version)
 
     @staticmethod
     def get_sha1_checksum(path):
@@ -163,6 +177,7 @@ class VRepository:
     def remove_image(self, version):
         path = self.get_image_path(version)
 
+        print path
         try:
             if self.is_exist(version):
                 os.remove(path)
@@ -191,7 +206,7 @@ class VRepository:
         meta, image = deepcopy(self.meta), deepcopy(img)
 
         if self.is_empty:
-            meta.description = img.description
+            meta.description = image.description
 
         for v in image.versions:
             if not self.has_version(v.version):
@@ -204,16 +219,26 @@ class VRepository:
                 self.copy_image(src, v.version)
                 self.sync_meta(meta)
                 self.dump_meta()
+            else:
+                raise VImageVersionFoundError(image.name, v.version)
 
-    def list(self):
-        return self.meta.name
+        return True
+
+    @property
+    def info(self):
+        return self.meta
 
     def remove(self, version):
         meta = self.filter_versions(VRepository.not_equal_versions, version)
+
         self.remove_image(version)
-        self.remove_meta()
         self.sync_meta(meta)
 
         if self.is_empty:
+            self.remove_meta()
             self.destroy_image()
             self.meta = VMetadataImage(self.meta.name)
+        else:
+            self.dump_meta()
+
+        return True
