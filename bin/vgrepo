@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # coding: utf8
 
-from vgrepo.client import VCLIApp
+from vgrepo.client import VCLIApplication
 
-APP_NAME = "vgrepo"
-CONF_FILE = "/etc/{app}.conf".format(app=APP_NAME)
+CONF_FILE = "/etc/vgrepo.conf"
 
 
 def main():
-    VCLIApp(APP_NAME, CONF_FILE)
+    VCLIApplication(CONF_FILE)
 
 
 if __name__ == "__main__":

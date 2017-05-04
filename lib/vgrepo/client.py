@@ -1,16 +1,20 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from .repository import VRepositoryManager, VRepository
+####################################################################################################
 
+from .repository import VRepository
+from .manager import VRepositoryManager
 from clint.arguments import Args
-
 from clint.textui import colored, puts, indent, min_width, max_width
 
+####################################################################################################
 
 APP = "vgrepo"
 VER = "1.0.1"
 DESC = "Utility for operating Vagrant images"
+
+####################################################################################################
 
 
 class VCLIUsage:
@@ -120,66 +124,56 @@ class VCLIUsage:
 
             puts("")
 
+####################################################################################################
 
-class VCLIApp:
+
+class VCLIApplication:
 
     def process(self):
         if self.cli.contains(['h', 'help']):
-            self.show_usage()
+            self.help_command()
 
         elif self.cli.contains(['a', 'add']):
-            self.add_image()
+            self.add_command()
 
         elif self.cli.contains(['l', 'list']):
-            self.list_images()
+            self.list_command()
 
         elif self.cli.contains(['r', 'remove']):
-            self.delete_image()
-
-        elif self.cli.contains(['d', 'destroy']):
-            self.destroy_image()
+            self.remove_command()
 
         else:
-            self.show_usage()
+            self.help_command()
 
     def __init__(self, cnf):
         self.app = APP
         self.repo = VRepositoryManager(cnf)
-        # self.usage = VCLIUsage(APP, VER, DESC)
-        # self.cli = Args()
-        #
-        # self.process()
+        self.usage = VCLIUsage(APP, VER, DESC)
+        self.cli = Args()
 
-    def add_image(self):
+        self.process()
+
+    def add_command(self):
         box = {
             'path': self.cli.files[0] if self.cli.files and len(self.cli.files) > 0 else None,
             'name': self.cli.value_after('-n') or self.cli.value_after('--name'),
             'version': self.cli.value_after('-v') or self.cli.value_after('--version'),
             'desc': self.cli.value_after('-d') or self.cli.value_after('--desc'),
+            'provider': self.cli.value_after('-p') or self.cli.value_after('--provider'),
         }
 
         if box['path'] and box['version']:
-            puts("Adding image to the repository... ")
+            puts("Adding image to the repository... ", newline=False)
 
-            is_added = self.repo.add(
-                src=box['path'],
-                name=box['name'],
-                version=box['version'],
-                desc=box['desc']
-            )
+            self.repo.add(src=box['path'], name=box['name'], version=box['version'], desc=box['desc'])
 
-            if is_added:
-                msg_status = colored.green("OK")
-            else:
-                msg_status = colored.red("Error")
-
-            puts(msg_status)
+            puts(colored.green("OK"))
         else:
-            self.show_usage()
+            self.help_command()
 
         return True
 
-    def list_images(self):
+    def list_command(self):
         boxes = self.repo.list()
 
         if boxes:
@@ -195,54 +189,39 @@ class VCLIApp:
         else:
             puts("There is no boxes yet.")
 
-    def delete_image(self):
-        box = {
+    def remove_command(self):
+        image = {
             'name': self.cli.value_after('r') or self.cli.value_after('remove'),
             'version': self.cli.value_after('-v') or self.cli.value_after('--version'),
         }
 
-        if box['name'] and box['version']:
+        if image['name'] and image['version']:
+            puts("Removing image from the repository... ", newline=False)
 
-            puts("Deleting image from the repository... ", newline=False)
-            is_deleted = self.repo.remove(
-                img=box['name'],
-                version=box['version']
-            )
+            self.repo.remove(name=image['name'], version=image['version'])
 
-            if is_deleted:
-                msg_status = colored.green("OK")
-            else:
-                msg_status = colored.red("FAIL")
-
-            puts(msg_status)
+            puts(colored.green("OK"))
         else:
-            self.show_usage()
+            self.help_command()
 
-    def destroy_image(self):
-        box_name = self.cli.value_after('kill') or \
-                   self.cli.value_after('k')
-
-        if box_name:
-            self.repo.destroy(box_name)
-        else:
-            self.show_usage()
-
-    def show_usage(self):
+    def help_command(self):
         self.usage.add_command(cmd="a:add", desc="Add image into the Vagrant's repository")
         self.usage.add_command(cmd="l:list", desc="Show list of available images")
         self.usage.add_command(cmd="r:remove", desc="Remove image from the repository")
-        self.usage.add_command(cmd="d:destroy", desc="Destroy all images with metadata from the repository")
         self.usage.add_command(cmd="h:help", desc="Show detailed information about command")
 
         self.usage.add_option(option="v:version", desc="Value of version of the box")
         self.usage.add_option(option="n:name", desc="Name of box in the repository")
         self.usage.add_option(option="d:desc", desc="Description of the box in the repository")
+        self.usage.add_option(option="p:provider", desc="Name of provider (e.g. virtualbox)")
 
         self.usage.add_example("{app} add $HOME/centos7-x86_64.box --name powerbox --version 1.0.1".format(app=APP))
-        self.usage.add_example("{app} delete powerbox --version 1.1.0".format(app=APP))
+        self.usage.add_example("{app} remove powerbox --version 1.1.0".format(app=APP))
         self.usage.add_example("{app} list".format(app=APP))
 
         self.usage.render()
+
+####################################################################################################
 
 
 def pretty_print(name, version, checksum):
