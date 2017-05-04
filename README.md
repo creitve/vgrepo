@@ -38,24 +38,21 @@ Commands:
 
   a or add                        Add image into the Vagrant's repository
   l or list                       Show list of available images
-  d or delete                     Delete image from the repository
-  k or kill                       Destroy all images with metadata from the repository
+  r or remove                     Delete image from the repository
   h or help                       Show detailed information about command
 
 Options:
 
   -v or --version [ver]           Value of version of the image
   -n or --name [box]              Name of image in the repository
-  -d or --description [descr]     Description of the image in the repository
+  -d or --desc [desc]             Description of the image in the repository
+  -p or --provider [descr]        Name of the provider
 
 Examples:
 
   vgrepo add $HOME/vagrant/centos7-x86_64.box --name powerbox --version 1.0.1
   vgrepo delete powerbox --version 1.1.0
   vgrepo list
-  vgrepo kill powerbox
-
-See vgrepo help <command> for information on a specific command.
 ```
 
 ## License
