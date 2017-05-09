@@ -27,10 +27,10 @@ class VCLIApplication:
     def success(msg="OK"):
         """
         Displays message with a green color
-        
+
         :param msg: message string
         :type msg: str
-        :return: 
+        :return:
         """
         puts(colored.green(msg))
 
@@ -38,10 +38,10 @@ class VCLIApplication:
     def error(msg="FAIL"):
         """
         Displays message with a red color and then exit
-        
+
         :param msg: message string
         :type msg: str
-        :return: 
+        :return:
         """
         puts(colored.red(msg))
         sys.exit(1)
@@ -49,13 +49,13 @@ class VCLIApplication:
     @staticmethod
     def print_column(text, size):
         """
-        Displays text in the column with a specified width 
-        
+        Displays text in the column with a specified width
+
         :param text: message string
         :type text: str
         :param size: width of the column
         :type size: int
-        :return: 
+        :return:
         """
         puts(min_width(text, size), newline=False)
 
@@ -63,10 +63,10 @@ class VCLIApplication:
     def print_row(els):
         """
         Display line with a set of columns
-        
+
         :param els: list of columns
         :type els: list
-        :return: 
+        :return:
         """
         for f in els:
             VCLIApplication.print_column(f['name'], f['width'])
@@ -74,9 +74,9 @@ class VCLIApplication:
 
     def process(self):
         """
-        Handles arguments and execute commands 
-        
-        :return: 
+        Handles arguments and execute commands
+
+        :return:
         """
         if self.cli.contains(['h', 'help']):
             self.help_command()
@@ -92,7 +92,7 @@ class VCLIApplication:
     def __init__(self, cnf):
         """
         Initializes storage client by given configuration file
-        
+
         :param cnf: path to configuration file
         :type cnf: str
         """
@@ -103,8 +103,8 @@ class VCLIApplication:
     def add_command(self):
         """
         Adds image or repository to the storage
-        
-        :return: 
+
+        :return:
         """
         args = {
             'src': self.cli.files[0] if self.cli.files and len(self.cli.files) > 0 else None,
@@ -136,8 +136,8 @@ class VCLIApplication:
     def list_command(self):
         """
         Displays list of available repositories and images inside of them
-        
-        :return: 
+
+        :return:
         """
         args = {
             'name': self.cli.value_after('-n') or self.cli.value_after('--name')
@@ -166,8 +166,8 @@ class VCLIApplication:
     def remove_command(self):
         """
         Removes image or repository from the storage
-        
-        :return: 
+
+        :return:
         """
         args = {
             'name': self.cli.value_after('r') or self.cli.value_after('remove'),
@@ -194,8 +194,8 @@ class VCLIApplication:
     def help_command():
         """
         Displays usage message
-        
-        :return: 
+
+        :return:
         """
         usage = VCLIUsage(VCLIApplication.APP, VCLIApplication.VER, VCLIApplication.DESC)
 

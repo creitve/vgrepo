@@ -17,7 +17,7 @@ class VStorage:
     def list_dirs(path):
         """
         Provides a simple directories list by given path
-        
+
         :param path: directory
         :type path: str
         :return: list of directories
@@ -37,7 +37,7 @@ class VStorage:
     def __init__(self, cnf):
         """
         Initializes repository instance and metadata
-        
+
         :param cnf: path to configuration file
         """
 
@@ -46,7 +46,7 @@ class VStorage:
     def add(self, src, name, version, desc='', provider='virtualbox'):
         """
         Adds new image to the repository by given parameters.
-        
+
         :param src: path to the loadable image file
         :type src: str
         :param name: identifier of the image
@@ -81,7 +81,7 @@ class VStorage:
     def list(self, name=None):
         """
         Provides list of the repositories on the storage
-        
+
         :param name: identifier of image (optional)
         :type name: str
         :return: list of repositories
@@ -99,7 +99,7 @@ class VStorage:
     def remove(self, name, version):
         """
         Removes repository or particular image from the repository
-        
+
         :param name: identified of the image
         :param version: version of the image
         """

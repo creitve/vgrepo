@@ -10,10 +10,10 @@ class VSettings:
     def read(cnf):
         """
         Parses YAML configuration file
-        
+
         :param cnf: path to the configuration file
         :type cnf: str
-        :return: 
+        :return:
         """
         try:
             with open(cnf, 'r') as s:
@@ -30,8 +30,8 @@ class VSettings:
     def storage_url(self):
         """
         Returns URL of the published images
-        
-        :return: str 
+
+        :return: str
         """
         return self.settings.get('storage').get('url').strip('/')
 
@@ -39,7 +39,7 @@ class VSettings:
     def storage_path(self):
         """
         Returns path for the repositories
-        
-        :return: str 
+
+        :return: str
         """
         return self.settings.get('storage').get('path')

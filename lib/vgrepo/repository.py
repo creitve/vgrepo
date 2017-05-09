@@ -36,7 +36,7 @@ class VRepository:
     def is_empty(self):
         """
         Returns is the repository empty (does not contain any versions) or not
-        
+
         :return: bool
         """
         return self.meta.versions is None or self.meta.versions == []
@@ -45,7 +45,7 @@ class VRepository:
     def has_meta(self):
         """
         Returns is the repository has metadata saved on the disk or not
-        
+
         :return: bool
         """
         try:
@@ -56,7 +56,7 @@ class VRepository:
     def has_image(self, version=None):
         """
         Returns is the image present or not by given version
-        
+
         :param version: version of the image
         :return: bool
         """
@@ -77,8 +77,8 @@ class VRepository:
         Returns is the repository:
         a) Has their own metadata on the disk
         b) Has saved image file in the repository
-        
-        :param version: version of the image 
+
+        :param version: version of the image
         :return: bool
         """
         return self.has_meta and self.has_image(version)
@@ -87,7 +87,7 @@ class VRepository:
     def meta_dir(self):
         """
         Returns metadata directory for the repository
-        
+
         :return: str
         """
         return os.path.join(self.image_dir, "metadata")
@@ -95,9 +95,9 @@ class VRepository:
     @property
     def meta_path(self):
         """
-        Returns full metadata path for the repository 
-        
-        :return: 
+        Returns full metadata path for the repository
+
+        :return:
         """
         path_format = "{name}.json"
 
@@ -107,7 +107,7 @@ class VRepository:
     def image_dir(self):
         """
         Returns directory for the images of the repository
-        
+
         :return: str
         """
         return os.path.join(self.settings.storage_path, self.meta.name)
@@ -116,8 +116,8 @@ class VRepository:
     def repo_url(self):
         """
         Returns URL to the metadata file
-        
-        :return: 
+
+        :return:
         """
         url_format = "{url}/{name}"
 
@@ -126,7 +126,7 @@ class VRepository:
     def get_image_path(self, version):
         """
         Returns full path to the image
-        
+
         :param version: version of the image
         :return: str
         """
@@ -136,8 +136,8 @@ class VRepository:
 
     def get_image_url(self, version):
         """
-        Returns direct URL to the image 
-        
+        Returns direct URL to the image
+
         :param version: version of the image
         :return: str
         """
@@ -149,9 +149,9 @@ class VRepository:
     def get_sha1_checksum(path):
         """
         Returns SHA1 string of the file by given path
-        
+
         :param path: path to the hashed file
-        :return: 
+        :return:
         """
         sha1 = hashlib.sha1()
 
@@ -170,8 +170,8 @@ class VRepository:
     def load_meta(self):
         """
         Loads or creates metadata for itself by given name
-        
-        :return: 
+
+        :return:
         """
         if self.has_meta:
             return VRepository.parse_meta(self.meta_path, VMetadataImage)
@@ -181,8 +181,8 @@ class VRepository:
     def dump_meta(self):
         """
         Saves metadata on the disk
-        
-        :return: 
+
+        :return:
         """
         path = self.meta_dir
         try:
@@ -200,8 +200,8 @@ class VRepository:
     @staticmethod
     def parse_meta(cnf, cls, is_list=False):
         """
-        Parse metadata on JSON format to the object 
-        
+        Parse metadata on JSON format to the object
+
         :param cnf: path to JSON file
         :param cls: name of class to parse
         :param is_list: is the object list or not
@@ -218,7 +218,7 @@ class VRepository:
     def is_equal_versions(first, second):
         """
         Returns are versions equal or not
-        
+
         :param first: first version
         :param second: second version
         :return: bool
@@ -228,21 +228,21 @@ class VRepository:
     @staticmethod
     def not_equal_versions(first, second):
         """
-        Returns are version not equal or not 
-        
+        Returns are version not equal or not
+
         :param first: first version
         :param second: second version
-        :return: bool 
+        :return: bool
         """
         return not VRepository.is_equal_versions(first, second)
 
     def filter_versions(self, func, version=None):
         """
         Returns list of images without versions by given function filter
-        
+
         :param func: name of the filter function
         :param version: number of version
-        :return: 
+        :return:
         """
         meta = deepcopy(self.meta)
 
@@ -257,8 +257,8 @@ class VRepository:
     def remove_meta(self):
         """
         Removes metadata from disk
-        
-        :return: 
+
+        :return:
         """
         try:
             if self.has_meta:
@@ -272,18 +272,18 @@ class VRepository:
     def sync_meta(self, meta):
         """
         Saves meta in memory by given copy
-        
+
         :param meta: copied meta object
-        :return: 
+        :return:
         """
         self.meta = deepcopy(meta)
 
     def has_version(self, version):
         """
         Returns is the repository has version of the image
-        
+
         :param version: version of the image
-        :return: 
+        :return:
         """
         entries = self.filter_versions(VRepository.is_equal_versions, version)
 
@@ -295,10 +295,10 @@ class VRepository:
     def copy_image(self, src, version):
         """
         Copies image to the repository's directory
-        
+
         :param src: path to the original image file
         :param version: version of the image
-        :return: 
+        :return:
         """
         try:
             if not os.path.isdir(self.image_dir):
@@ -316,9 +316,9 @@ class VRepository:
     def remove_image(self, version):
         """
         Removes image from the repository
-        
+
         :param version: version of the image
-        :return: 
+        :return:
         """
         path = self.get_image_path(version)
 
@@ -334,8 +334,8 @@ class VRepository:
     def destroy(self):
         """
         Destroys all images from the repository
-        
-        :return: 
+
+        :return:
         """
         try:
             shutil.rmtree(self.image_dir, ignore_errors=True)
@@ -354,10 +354,10 @@ class VRepository:
     def add(self, src, img):
         """
         Adds image to the repository by given file and metadata
-        
+
         :param src: source image
         :param img: image's metadata
-        :return: 
+        :return:
         """
         meta, image = deepcopy(self.meta), deepcopy(img)
 
@@ -385,17 +385,17 @@ class VRepository:
     def info(self):
         """
         Returns metadata of the repository
-        
-        :return: 
+
+        :return:
         """
         return self.meta
 
     def remove(self, version):
         """
         Removes image by given version
-        
+
         :param version: version of the image
-        :return: 
+        :return:
         """
         meta = self.filter_versions(VRepository.not_equal_versions, version)
 
