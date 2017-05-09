@@ -32,27 +32,25 @@ python vgrepo/setup.py install
 ```
 Usage: vgrepo [command] [options]
 
-Utility for operating Vagrant images.
+Commands
 
-Commands:
+    add or a                     Add image into the Vagrant's repository
+    list or l                    Show list of available images
+    remove or r                  Remove image from the repository
+    help or h                    Display current help message
 
-  a or add                        Add image into the Vagrant's repository
-  l or list                       Show list of available images
-  r or remove                     Delete image from the repository
-  h or help                       Show detailed information about command
+Options
 
-Options:
+    -v, --version                Value of version of the box
+    -n, --name                   Name of box in the repository
+    -d, --desc                   Description of the box in the repository
+    -p, --provider               Name of provider (e.g. virtualbox)
 
-  -v or --version [ver]           Value of version of the image
-  -n or --name [box]              Name of image in the repository
-  -d or --desc [desc]             Description of the image in the repository
-  -p or --provider [descr]        Name of the provider
+Examples
 
-Examples:
-
-  vgrepo add $HOME/vagrant/centos7-x86_64.box --name powerbox --version 1.0.1
-  vgrepo delete powerbox --version 1.1.0
-  vgrepo list
+    vgrepo add image.box --name box --version 1.0.1
+    vgrepo remove powerbox --version 1.1.0
+    vgrepo list
 ```
 
 ## License

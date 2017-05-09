@@ -30,7 +30,6 @@ class VCLIUsage:
         :type cmd: str
         :return: formatted command string 
         """
-
         if cmd.find(':') != -1:
             cmd_slice = cmd.split(':')
             return "{long} or {short}".format(long=cmd_slice[1], short=cmd_slice[0])
@@ -46,7 +45,6 @@ class VCLIUsage:
         :type option: str
         :return: formatted option string
         """
-
         if option.startswith('-'):
             return option
 
@@ -74,7 +72,6 @@ class VCLIUsage:
         :type desc: str
         :return: 
         """
-
         self.commands.append({'cmd': self.parse_command(cmd), 'desc': desc})
 
     def add_option(self, option, desc):
@@ -87,7 +84,6 @@ class VCLIUsage:
         :type desc: str
         :return: 
         """
-
         self.options.append({'option': self.parse_option(option), 'desc': desc})
 
     def add_example(self, desc):
@@ -98,7 +94,6 @@ class VCLIUsage:
         :type desc: str
         :return: 
         """
-
         self.examples.append({'desc': desc})
 
     @staticmethod
@@ -110,7 +105,6 @@ class VCLIUsage:
         :type text: str
         :return: 
         """
-
         puts(colored.yellow("{0}\n".format(text)))
 
     def render_line(self, body):
@@ -133,7 +127,6 @@ class VCLIUsage:
         :type right: str
         :return: 
         """
-
         def render_left_column(text):
             """
             Displays left column
@@ -142,7 +135,6 @@ class VCLIUsage:
             :type text: str
             :return: 
             """
-
             puts(min_width(text, VCLIUsage.LEFT_COLUMN_WIDTH), newline=False)
 
         def render_right_column(text):
@@ -153,7 +145,6 @@ class VCLIUsage:
             :type text: str
             :return: 
             """
-
             puts(max_width(min_width(text, VCLIUsage.RIGHT_COLUMN_WIDTH), VCLIUsage.TOTAL_WIDTH))
 
         render_left_column(left)
@@ -165,7 +156,6 @@ class VCLIUsage:
         
         :return: 
         """
-
         self.render_header()
         self.render_commands()
         self.render_options()
@@ -177,7 +167,6 @@ class VCLIUsage:
         
         :return: 
         """
-
         header_template = "\n{usage}: {app} {commands} {options}\n\n{desc}\n"
 
         puts(header_template.format(
@@ -190,11 +179,10 @@ class VCLIUsage:
 
     def render_commands(self):
         """
-        Renders submenu with an info about avilable commands
+        Renders submenu with an info about available commands
         
         :return: 
         """
-
         if self.commands:
             self.render_title("Commands")
 
@@ -209,7 +197,6 @@ class VCLIUsage:
 
         :return: 
         """
-
         if self.options:
             self.render_title("Options")
 
@@ -224,7 +211,6 @@ class VCLIUsage:
 
         :return: 
         """
-
         if self.examples:
             self.render_title("Examples")
 

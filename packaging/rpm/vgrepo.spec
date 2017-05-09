@@ -2,7 +2,7 @@
 
 Summary:        Utility for managing Vagrant repositories
 Name:           vgrepo
-Version:        1.0.1
+Version:        1.1.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries
@@ -56,8 +56,8 @@ install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/%{name}.conf
 ########################################################################################
 
 %changelog
-* Tue May 2 2017 Gleb Goncharov <gongled@gongled.ru> - 1.0.1-0
-- Added PyYAML in a dependency list
+* Tue May 9 2017 Gleb Goncharov <gongled@gongled.ru> - 1.1.0-0
+- Updated to the latest version
 
 * Mon May 1 2017 Gleb Goncharov <gongled@gongled.ru> - 1.0.1-0
 - Initial build

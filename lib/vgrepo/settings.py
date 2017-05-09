@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# encoding: utf8
+# coding: utf8
 
 import yaml
 
@@ -8,6 +8,13 @@ class VSettings:
 
     @staticmethod
     def read(cnf):
+        """
+        Parses YAML configuration file
+        
+        :param cnf: path to the configuration file
+        :type cnf: str
+        :return: 
+        """
         try:
             with open(cnf, 'r') as s:
                 return yaml.load(s)
@@ -21,8 +28,18 @@ class VSettings:
 
     @property
     def storage_url(self):
+        """
+        Returns URL of the published images
+        
+        :return: str 
+        """
         return self.settings.get('storage').get('url').strip('/')
 
     @property
     def storage_path(self):
+        """
+        Returns path for the repositories
+        
+        :return: str 
+        """
         return self.settings.get('storage').get('path')
