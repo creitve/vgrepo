@@ -13,7 +13,7 @@ Source1:        %{name}.conf
 
 BuildRequires:  python-clint python-devel python-setuptools
 
-Requires:       python-clint python-setuptools PyYAML
+Requires:       python-clint python-setuptools python-packaging PyYAML
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
