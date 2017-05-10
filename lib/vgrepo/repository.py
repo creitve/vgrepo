@@ -190,7 +190,7 @@ class VRepository:
                 os.makedirs(path)
 
             with open(self.meta_path, 'w') as stream:
-                stream.write(self.meta.to_json())
+                stream.write("{0}\n".format(self.meta.to_json()))
         except (OSError, IOError):
             print("Error: unable to write metadata to '{0}'".format(self.meta_path))
             return False
