@@ -30,7 +30,7 @@ class VRepository:
     Provides methods to manage repository in the storage
     """
 
-    SHA1_BUFFER_SIZE = 65536
+    SHA256_BUFFER_SIZE = 65536
 
     @property
     def is_empty(self):
@@ -146,26 +146,26 @@ class VRepository:
         return url_format.format(url=self.repo_url, name=self.meta.name, version=version)
 
     @staticmethod
-    def get_sha1_checksum(path):
+    def get_sha256_checksum(path):
         """
-        Returns SHA1 string of the file by given path
+        Returns SHA256 string of the file by given path
 
         :param path: path to the hashed file
         :return:
         """
-        sha1 = hashlib.sha1()
+        sha256 = hashlib.sha256()
 
         try:
             with open(path, 'r') as stream:
                 while True:
-                    chunk = stream.read(VRepository.SHA1_BUFFER_SIZE)
+                    chunk = stream.read(VRepository.SHA256_BUFFER_SIZE)
                     if not chunk:
                         break
-                    sha1.update(chunk)
+                    sha256.update(chunk)
         except [OSError, IOError]:
             print("Error: unable to read file {0}".format(path))
 
-        return sha1.hexdigest() if sha1 else sha1
+        return sha256.hexdigest() if sha256 else sha256
 
     def load_meta(self):
         """
@@ -368,8 +368,8 @@ class VRepository:
             if not self.has_version(v.version):
                 for p in v.providers:
                     p.name = p.name or "virtualbox"
-                    p.checksum_type = "sha1"
-                    p.checksum = VRepository.get_sha1_checksum(src)
+                    p.checksum_type = "sha256"
+                    p.checksum = VRepository.get_sha256_checksum(src)
                     p.url = self.get_image_url(v.version)
 
                 meta.versions.append(v)
