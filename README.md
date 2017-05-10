@@ -27,6 +27,49 @@ git clone git@github.com:gongled/vgrepo
 python vgrepo/setup.py install
 ```
 
+## Configuration
+
+Specify storage settings in the `/etc/vgrepo.conf` configuration file:
+
+```
+storage:
+
+  path: "/srv/vagrant"
+
+  url: "http://localhost:8080"
+```
+
+Run a NGINX with the following configuration of virtual host:
+
+```
+server {
+    listen 8080;
+    server_name localhost;
+
+    root /srv/vagrant;
+
+    location ~ ^/([^\/]+)/$ {
+        index /metadata/$1.json;
+        try_files /$1/metadata/$1.json =404;
+    }
+
+    location ~ \.json$ {
+        add_header Content-Type application/json;
+    }
+
+    location ~ \.box$ {
+        add_header Content-Type application/octet-stream;
+    }
+
+    location / {
+	    autoindex off;
+        expires -1;
+    }
+}
+```
+
+Well done. Now you can use `http://localhost:8080/boxname` in the `config.vm.box_url` parameter.
+
 ## Usage
 
 ```
