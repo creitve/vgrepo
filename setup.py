@@ -8,14 +8,14 @@ if sys.version_info >= (3,):
 
 setup(
     name='vgrepo',
-    version='1.1.0',
+    version='1.1.1',
     description='Utility for managing Vagrant repositories',
     long_description="""
         Pythonic tool for adding, listing and removing Vagrant images from repositories.
     """,
     author='Gleb Goncharov',
     author_email='gongled@gongled.ru',
-    install_requires=['clint>=0.5.0'],
+    install_requires=['clint>=0.5.0', 'packaging', 'pyyaml'],
     url='https://github.com/gongled/vgrepo',
     package_dir={'': 'lib'},
     packages=find_packages('lib'),

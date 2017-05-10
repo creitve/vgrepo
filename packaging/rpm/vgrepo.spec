@@ -2,10 +2,10 @@
 
 Summary:        Utility for managing Vagrant repositories
 Name:           vgrepo
-Version:        1.1.0
+Version:        1.1.1
 Release:        0%{?dist}
 License:        MIT
-Group:          Development/Libraries
+Group:          Development/Tools
 URL:            https://pypi.python.org/pypi/vgrepo
 
 Source0:        https://github.com/gongled/%{name}/archive/v%{version}.tar.gz
@@ -13,7 +13,7 @@ Source1:        %{name}.conf
 
 BuildRequires:  python-clint python-devel python-setuptools
 
-Requires:       python-clint python-setuptools PyYAML
+Requires:       python-clint python-setuptools python-packaging PyYAML
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -56,9 +56,12 @@ install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/%{name}.conf
 ########################################################################################
 
 %changelog
-* Tue May 9 2017 Gleb Goncharov <gongled@gongled.ru> - 1.1.0-0
+* Wed May 10 2017 Gleb Goncharov <gongled@gongled.ru> - 1.1.1-0
 - Updated to the latest version
 
-* Mon May 1 2017 Gleb Goncharov <gongled@gongled.ru> - 1.0.1-0
+* Tue May 09 2017 Gleb Goncharov <gongled@gongled.ru> - 1.1.0-0
+- Updated to the latest version
+
+* Mon May 01 2017 Gleb Goncharov <gongled@gongled.ru> - 1.0.1-0
 - Initial build
 
