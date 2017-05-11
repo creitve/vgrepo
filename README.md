@@ -39,7 +39,7 @@ storage:
   url: "http://localhost:8080"
 ```
 
-Run nginx with the following configuration of virtual host:
+Run NGINX with the following configuration of virtual host:
 
 ```
 server {
@@ -77,17 +77,17 @@ Usage: vgrepo [command] [options]
 
 Commands
 
-    add, a                     Add image into the Vagrant's repository
-    list, l                    Show list of available images
-    remove, r                  Remove image from the repository
-    help, h                    Display current help message
+    add or a                     Add image to the Vagrant repository
+    list or l                    Show the list of available images
+    remove or r                  Remove the image from the repository
+    help or h                    Display the current help message
 
 Options
 
-    -v, --version                Value of version of the box
-    -n, --name                   Name of box in the repository
-    -d, --desc                   Description of the box in the repository
-    -p, --provider               Name of provider (e.g. virtualbox)
+    -v, --version                Version of the box
+    -n, --name                   Name of box
+    -d, --desc                   Description of the box
+    -p, --provider               Name of provider
 
 Examples
 
