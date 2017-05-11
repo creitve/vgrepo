@@ -77,10 +77,10 @@ Usage: vgrepo [command] [options]
 
 Commands
 
-    add or a                     Add image into the Vagrant's repository
-    list or l                    Show list of available images
-    remove or r                  Remove image from the repository
-    help or h                    Display current help message
+    add, a                     Add image into the Vagrant's repository
+    list, l                    Show list of available images
+    remove, r                  Remove image from the repository
+    help, h                    Display current help message
 
 Options
 
