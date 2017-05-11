@@ -4,7 +4,7 @@
 [![codebeat badge](https://codebeat.co/badges/016cae98-9953-4f0e-9495-d9a91969b6ef)](https://codebeat.co/projects/github-com-gongled-vgrepo-master)
 [![PyPI](https://img.shields.io/pypi/v/vgrepo.svg)]()
 
-`vgrepo` is a tool for managing Vagrant repositories written in Python.
+`vgrepo` is a CLI tool for managing Vagrant repositories.
 
 ## Requirements
 
@@ -39,7 +39,7 @@ storage:
   url: "http://localhost:8080"
 ```
 
-Run a NGINX with the following configuration of virtual host:
+Run nginx with the following configuration of virtual host:
 
 ```
 server {
@@ -68,7 +68,7 @@ server {
 }
 ```
 
-Well done. Now you can use `http://localhost:8080/boxname` in the `config.vm.box_url` parameter.
+Now you can use `http://localhost:8080/boxname` in the `config.vm.box_url` parameter.
 
 ## Usage
 
